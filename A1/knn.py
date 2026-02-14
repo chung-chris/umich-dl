@@ -60,7 +60,9 @@ def compute_distances_two_loops(x_train: torch.Tensor, x_test: torch.Tensor):
     # functions from torch.nn or torch.nn.functional.                        #
     ##########################################################################
     # Replace "pass" statement with your code
-    pass
+    for i in range(num_train):
+        for j in range(num_test):
+            dists[i, j] = ((x_train[i] - x_test[j]) ** 2).sum()
     ##########################################################################
     #                           END OF YOUR CODE                             #
     ##########################################################################
@@ -104,7 +106,8 @@ def compute_distances_one_loop(x_train: torch.Tensor, x_test: torch.Tensor):
     # functions from torch.nn or torch.nn.functional.                        #
     ##########################################################################
     # Replace "pass" statement with your code
-    pass
+    for i in range(num_train):
+        dists[i, :] = ((x_train[i] - x_test) ** 2).sum(dim=1)
     ##########################################################################
     #                           END OF YOUR CODE                             #
     ##########################################################################
@@ -156,7 +159,9 @@ def compute_distances_no_loops(x_train: torch.Tensor, x_test: torch.Tensor):
     #       and a matrix multiply.                                           #
     ##########################################################################
     # Replace "pass" statement with your code
-    pass
+    x_train_flat = x_train.view(num_train, -1)
+    x_test_flat = x_test.view(num_test, -1)
+    dists = (x_train_flat ** 2).sum(dim=1, keepdim=True) + (x_test_flat ** 2).sum(dim=1) - 2 * x_train_flat @ x_test_flat.T
     ##########################################################################
     #                           END OF YOUR CODE                             #
     ##########################################################################
